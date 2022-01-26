@@ -1,0 +1,74 @@
+html {
+    background-color: green;
+    width: 100vw;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+}
+
+p,div{
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+.scoreboard-container{
+    height: 40vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.scoreboard{
+    background-color: #0f1110;
+    width: 40vw;
+    margin-top: 25px;
+}
+.team{
+    height: 33%;
+    background-color: #aaa;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+}
+
+#home, #away{
+    flex: 3;
+    background-color:blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#home-score-container, #away-score-container{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.team-title{
+    font-size: 50px;
+    color: white;
+    font-weight: bold;
+}
+
+.scoreboard-btm{
+    height: 33%;
+    background-color: #aaa;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+#inning, #count, #outs, #bases{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff
+}
