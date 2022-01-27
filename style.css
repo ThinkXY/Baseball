@@ -20,16 +20,18 @@ h1 {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    
 }
 
 .scoreboard{
     background-color: #0f1110;
     width: 40vw;
     margin-top: 25px;
+    border: 8px solid white;
 }
 .team{
     height: 33%;
-    background-color: #aaa;
+    background-color: rgb(65, 60, 60);
     padding: 0px;
     margin: 0px;
     display: flex;
@@ -37,10 +39,29 @@ h1 {
 
 #home, #away{
     flex: 3;
-    background-color:blue;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#home{
+    background-color:brown;
+    border-top: 1px solid white;
+    border-right: 2px solid white;
+}
+
+#away{
+    background-color: cornflowerblue;
+    border-bottom: 1px solid white;
+    border-right: 2px solid white;
+}
+
+#home-score-container {
+    border-top: 1px solid white;
+}
+
+#away-score-container {
+    border-bottom: 1px solid white;
 }
 
 #home-score-container, #away-score-container{
@@ -57,12 +78,13 @@ h1 {
 }
 
 .scoreboard-btm{
-    height: 33%;
-    background-color: #aaa;
+    height: 34%;
+    background-color: rgb(65, 60, 60);
     padding: 0px;
     margin: 0px;
     display: flex;
     flex-direction: row;
+    border-top: 2px solid white;
 }
 
 #inning, #count, #outs, #bases{
@@ -70,5 +92,58 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff
+    background-color: rgb(65, 60, 60);
+}
+
+#inning {
+    border-right: 1px solid white;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+#inning-indicator{
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 10px solid rgb(247, 211, 6);
+    margin-bottom: 10px;
+    margin-left: 4px;
+}
+
+#count {
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+#outs {
+    border-right: 2px solid white;
+    border-left: 1px solid white;
+    margin-right: 1px;
+}
+
+.out{
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.base{
+    transform:rotate(45deg);
+    width: 20px;
+    height: 20px;
+    background-color: white;
+}
+
+#base2{
+    margin-bottom: 40px
 }
