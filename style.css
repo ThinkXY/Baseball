@@ -15,6 +15,12 @@ h1 {
     color: white;
 }
 
+h2 {
+    text-align: center;
+    color: white;
+    font-size: 16px;
+}
+
 .scoreboard-container{
     height: 40vh;
     display: flex;
@@ -146,4 +152,23 @@ h1 {
 
 #base2{
     margin-bottom: 40px
+}
+
+#gameboard-container{
+    height: 40vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: blue;
+}
+
+#gameboard{
+    width: 60vw;
+    background-color:rgb(65, 60, 60);
+}
+
+.square-zone{
+    background-color: white;
+    width: 50px;
+    height: 50px;
 }
