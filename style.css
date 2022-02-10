@@ -119,6 +119,10 @@ h2 {
     margin-left: 4px;
 }
 
+.transpose{
+    transform:rotate(180deg);
+}
+
 #count {
     border-right: 1px solid white;
     border-left: 1px solid white;
