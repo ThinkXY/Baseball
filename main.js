@@ -52,8 +52,9 @@ const cpuGetPitchLocation = () => {
 
 //function to move runners and update score on single
 const onSingle = () => {
-  console.log("single");
-  for(let i = 0; i < 3; i++){
+    document.querySelector("#statement2").innerHTML = "Single!";
+
+    for(let i = 0; i < 3; i++){
       if(bases[i] === true){
           if(i === 0){
               //check team and update correct score
@@ -75,7 +76,7 @@ const onSingle = () => {
 
 //function to move runners and update score on double
 const onDouble = () => {
-    console.log("double");
+    document.querySelector("#statement2").innerHTML = "Double!";
     for(let i = 0; i < 3; i++){
         if(bases[i] === true){
             if(i <= 1){
@@ -98,7 +99,7 @@ const onDouble = () => {
 
 //function to move runners and update score on triple
 const onTriple = () => {
-    console.log("triple");
+    document.querySelector("#statement2").innerHTML = "Triple!";
     for(let i = 0; i < 3; i++){
         if(bases[i] === true){
             //check team and update correct score
@@ -115,7 +116,7 @@ const onTriple = () => {
 
 //function to move runners and update score on homerun
 const onHR = () => {
-    console.log("hr");
+    document.querySelector("#statement2").innerHTML = "Home Run!";
     for(let i = 0; i < 3; i++){
         if(bases[i] === true){
             //check team and update correct score
@@ -134,6 +135,7 @@ const onHR = () => {
 const onStrike = () => {
     console.log("strike");
     strikes++;
+    document.querySelector("#statement2").innerHTML = "Strike!";
 
     if(strikes === 3){
         onOut();
@@ -147,6 +149,7 @@ const onStrike = () => {
 const onBall = () => {
     console.log("ball");
     balls++;
+    document.querySelector("#statement2").innerHTML = "Ball!";
 
     if(balls === 4){
         onWalk();
@@ -159,6 +162,7 @@ const onBall = () => {
 
 const onWalk = () => {
     console.log("walk");
+    document.querySelector("#statement2").innerHTML = "Ball 4. Take your Base!";
     if(bases[2] === false){
         bases[2] = true;
     }
@@ -180,15 +184,25 @@ const onWalk = () => {
     updateBases();
 }
 const onOut = () => {
-    console.log("out");
+    document.querySelector("#statement2").innerHTML = "Out";
     outs++;
     updateOuts();
     resetCount();
 
     if(outs === 3){
-        if(isGameOver === true){
+        if(isGameOver() === true){
             //do game over stuff
             console.log("Game Over");
+            document.querySelector("#statement").innerHTML = "Game Over!!!";
+            //game over
+            disablePitches();
+            disableStrikezone();
+            if(awayScore > homeScore){
+                document.querySelector("#statement2").innerHTML = "You Lost! :(";
+            }
+            else{
+                document.querySelector("#statement2").innerHTML = "You Win!!! :)";
+            }
         }
 
         else{
@@ -242,10 +256,18 @@ const updateOuts = () => {
 //check if game is over
 const isGameOver = () => {
     if(inning === 9){
-        if(isBottomInning === true){
+        /*if(isBottomInning === true){
             if(homeScore > awayScore){
                 return true;
             }
+        }*/
+        if(homeScore > awayScore){
+            return true;
+        }
+    }
+    else if(inning > 9){
+        if(homeScore > awayScore || homeScore < awayScore){
+            return true;
         }
     }
 
@@ -298,12 +320,14 @@ const newInning = () => {
         isBottomInning = true;
         //flip triangle
         document.querySelector("#inning-indicator").style.transform = "rotate(180deg)";
+        document.querySelector("#statement2").innerHTML = "You are Hitting!";
     }
     else{
         inning++;
         isBottomInning = false;
         document.querySelector("#inning-number").innerHTML = inning;
         document.querySelector("#inning-indicator").style.transform = "rotate(0deg)";
+        document.querySelector("#statement2").innerHTML = "You are Pitching!";
     }
 };
 
