@@ -48,7 +48,7 @@ const onSingle = () => {
       if(bases[i] === true){
           if(i === 0){
               //check team and update correct score
-              (isbottomInning === false) ? awayScore++ : homeScore++;
+              (isBottomInning === false) ? awayScore++ : homeScore++;
               updateScore();
               bases[i] = false;
           }
@@ -60,6 +60,8 @@ const onSingle = () => {
   }
 
   bases[2] = true;
+  resetCount();
+  updateBases();
 }
 
 //function to move runners and update score on double
@@ -68,7 +70,7 @@ const onDouble = () => {
         if(bases[i] === true){
             if(i <= 1){
                 //check team and update correct score
-                (isbottomInning === false) ? awayScore++ : homeScore++;
+                (isBottomInning === false) ? awayScore++ : homeScore++;
                 updateScore();
                 bases[i] = false;
             }
@@ -81,6 +83,8 @@ const onDouble = () => {
     }
   
     bases[1] = true;
+    resetCount();
+    updateBases();
 }
 
 //function to move runners and update score on triple
@@ -89,7 +93,7 @@ const onTriple = () => {
         if(bases[i] === true){
             if(i <= 1){
                 //check team and update correct score
-                (isbottomInning === false) ? awayScore++ : homeScore++;
+                (isBottomInning === false) ? awayScore++ : homeScore++;
                 updateScore();
                 bases[i] = false;
             }
@@ -97,6 +101,8 @@ const onTriple = () => {
     }
   
     bases[3] = true;
+    resetCount();
+    updateBases();
 }
 
 //function to move runners and update score on homerun
@@ -105,15 +111,78 @@ const onHR = () => {
         if(bases[i] === true){
             if(i <= 1){
                 //check team and update correct score
-                (isbottomInning === false) ? awayScore++ : homeScore++;
+                (isBottomInning === false) ? awayScore++ : homeScore++;
                 updateScore();
                 bases[i] = false;
             }
         }
     }
     //add one more run and update score
-    (isbottomInning === false) ? awayScore++ : homeScore++;
+    (isBottomInning === false) ? awayScore++ : homeScore++;
     updateScore();
+    resetCount();
+    updateBases();
+}
+
+const onStrike = () => {
+    strikes++;
+
+    if(strikes === 3){
+        onOut();
+    }
+    else{
+        //update boardstrikes
+        document.querySelector("#strikes").innerHTML = strikes;
+    }
+}
+
+const onBall = () => {
+    balls++;
+
+    if(balls === 4){
+        onWalk();
+    }
+    else{
+        //update boardstrikes
+        document.querySelector("#balls").innerHTML = balls;
+    }
+}
+
+const onWalk = () => {
+    if(bases[2] === false){
+        bases[2] = true;
+    }
+    else{
+        if(bases[1] === false){
+            bases[1] = true;
+        }
+        else{
+            if(bases[0] === false){
+                bases[0] = true;
+            }
+            else{
+                (isBottomInning === false) ? awayScore++ : homeScore++;
+                updateScore();
+            }
+        }
+    }
+    resetCount();
+}
+const onOut = () => {
+    outs++;
+    updateOuts();
+    resetCount();
+
+    if(outs === 3){
+        if(isGameOver === true){
+            //do game over stuff
+        }
+
+        else{
+            newInning();
+        }
+    }
+    
 }
 
 //update score function (based on home and away score)
@@ -141,9 +210,23 @@ const updateCount = () => {
     document.querySelector("#strikes").innerHTML = strikes;
 }
 
+//function to update outs
+const updateOuts = () => {
+    (outs => 1) ? document.querySelector("#out1").style.backgroundColor = "rgb(247, 211, 6, .7)" : document.querySelector("#out1").style.backgroundColor = "white";
+    (outs => 2) ? document.querySelector("#out2").style.backgroundColor = "rgb(247, 211, 6, .7)" : document.querySelector("#out1").style.backgroundColor = "white";
+}
+
 //check if game is over
 const isGameOver = () => {
+    if(inning === 9){
+        if(isBottomInning === true){
+            if(homeScore > awayScore){
+                return true;
+            }
+        }
+    }
 
+    return false;
 };
 
 //function to reset game variables to initial values
@@ -166,16 +249,19 @@ const resetGame = () => {
 const resetCount = () => {
     balls = 0;
     strikes = 0;
+    updateCount();
 };
 
 //reset outs
 const resetOuts = () => {
     outs = 0;
+    updateOuts();
 }
 
 //reset bases
 const resetBases = () => {
     bases = [false, false, false];
+    updateBases();
 };
 
 //new inning
@@ -328,12 +414,46 @@ const onClickSL = () => {
     disablePitches();
 };
 
+//function for pitching
+const pitch = () => {
+    //get cpu batters guess pitch and guess location
+    let guessPitch = cpuGuessPitch();
+    let guessLocation = cpuGuessPitchLocation();
+
+    //my values are currentPitch and zoneSquare
+
+    if(guessPitch === currentPitch && guessLocation){
+        //hr
+    }
+    else{
+        //single, double, triple, out, strike, ball
+    }
+}
+
+//function for pitching
+const bat = () => {
+    //get cpu batters guess pitch and guess location
+    let cpuPitch = cpuGetPitch();
+    let cpuLocation = cpuGetPitchLocation();
+
+    //my values are currentPitch and zoneSquare
+
+    if(cpuPitch === currentPitch && guessLocation){
+        //hr
+    }
+    else{
+        //single, double, triple, out, strike, ball
+    }
+}
+
 //function to play game
-const game = () => {
+const game = (zoneParam, pitchParam) => {
     
     //pitching
     if(isBottomInning === false){
-        document.querySelector("#statement").innerHTML = "You are Pitching";
+        pitch();
+
+        /**document.querySelector("#statement").innerHTML = "You are Pitching";
         document.querySelector("#statement2").innerHTML = "New Half Inning";
         while (outs < 3 && gameOver === false){
             //change to pitch interface
@@ -341,7 +461,7 @@ const game = () => {
             
             //select pitches
             //
-        }
+        }*/
     }
     //batting
     else{
