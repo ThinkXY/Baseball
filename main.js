@@ -1,7 +1,7 @@
 /*
 Strikezone:
-[00][01] = [0][1]
-[10][11]   [2][3]
+[0][1]
+[2][3]
 
 Pitches:
 FB : 0
@@ -36,14 +36,23 @@ let currentPitch = -1;
 //pitching parameters (if nec)
 
 //hitting logic (cpu and guess pitch)
-const cpuGuessPitch = () => {}
-const cpuGuessPitchLocation = () => {}
+const cpuGuessPitch = () => {
+    return Math.floor(Math.random() * 4);
+}
+const cpuGuessPitchLocation = () => {
+    return Math.floor(Math.random() * 4);
+}
 //pitching logic (cpu and guess pitch)
-const cpuGetPitch = () => {}
-const cpuGetPitchLocation = () => {}
+const cpuGetPitch = () => {
+    return Math.floor(Math.random() * 4);
+}
+const cpuGetPitchLocation = () => {
+    return Math.floor(Math.random() * 4);
+}
 
 //function to move runners and update score on single
 const onSingle = () => {
+  console.log("single");
   for(let i = 0; i < 3; i++){
       if(bases[i] === true){
           if(i === 0){
@@ -66,6 +75,7 @@ const onSingle = () => {
 
 //function to move runners and update score on double
 const onDouble = () => {
+    console.log("double");
     for(let i = 0; i < 3; i++){
         if(bases[i] === true){
             if(i <= 1){
@@ -76,7 +86,6 @@ const onDouble = () => {
             }
             else{
                 bases[i] = false;
-                if(i=2)
                 bases[i-2] = true;
             }
         }
@@ -89,32 +98,30 @@ const onDouble = () => {
 
 //function to move runners and update score on triple
 const onTriple = () => {
+    console.log("triple");
     for(let i = 0; i < 3; i++){
         if(bases[i] === true){
-            if(i <= 1){
-                //check team and update correct score
-                (isBottomInning === false) ? awayScore++ : homeScore++;
-                updateScore();
-                bases[i] = false;
-            }
+            //check team and update correct score
+            (isBottomInning === false) ? awayScore++ : homeScore++;
+            updateScore();
+            bases[i] = false;
         }
     }
   
-    bases[3] = true;
+    bases[0] = true;
     resetCount();
     updateBases();
 }
 
 //function to move runners and update score on homerun
 const onHR = () => {
+    console.log("hr");
     for(let i = 0; i < 3; i++){
         if(bases[i] === true){
-            if(i <= 1){
-                //check team and update correct score
-                (isBottomInning === false) ? awayScore++ : homeScore++;
-                updateScore();
-                bases[i] = false;
-            }
+            //check team and update correct score
+            (isBottomInning === false) ? awayScore++ : homeScore++;
+            updateScore();
+            bases[i] = false;
         }
     }
     //add one more run and update score
@@ -125,6 +132,7 @@ const onHR = () => {
 }
 
 const onStrike = () => {
+    console.log("strike");
     strikes++;
 
     if(strikes === 3){
@@ -137,6 +145,7 @@ const onStrike = () => {
 }
 
 const onBall = () => {
+    console.log("ball");
     balls++;
 
     if(balls === 4){
@@ -149,6 +158,7 @@ const onBall = () => {
 }
 
 const onWalk = () => {
+    console.log("walk");
     if(bases[2] === false){
         bases[2] = true;
     }
@@ -167,8 +177,10 @@ const onWalk = () => {
         }
     }
     resetCount();
+    updateBases();
 }
 const onOut = () => {
+    console.log("out");
     outs++;
     updateOuts();
     resetCount();
@@ -176,6 +188,7 @@ const onOut = () => {
     if(outs === 3){
         if(isGameOver === true){
             //do game over stuff
+            console.log("Game Over");
         }
 
         else{
@@ -196,11 +209,21 @@ const updateBases = () => {
     if(bases[0] === true){
         document.querySelector("#base1").style.backgroundColor = "rgb(247, 211, 6)";
     }
+    else{
+        document.querySelector("#base1").style.backgroundColor = "white";
+    }
+
     if(bases[1] === true){
         document.querySelector("#base2").style.backgroundColor = "rgb(247, 211, 6)";
     }
+    else{
+        document.querySelector("#base2").style.backgroundColor = "white";
+    }
     if(bases[2] === true){
         document.querySelector("#base3").style.backgroundColor = "rgb(247, 211, 6)";
+    }
+    else{
+        document.querySelector("#base3").style.backgroundColor = "white";
     }
 }
 
@@ -212,8 +235,8 @@ const updateCount = () => {
 
 //function to update outs
 const updateOuts = () => {
-    (outs => 1) ? document.querySelector("#out1").style.backgroundColor = "rgb(247, 211, 6, .7)" : document.querySelector("#out1").style.backgroundColor = "white";
-    (outs => 2) ? document.querySelector("#out2").style.backgroundColor = "rgb(247, 211, 6, .7)" : document.querySelector("#out1").style.backgroundColor = "white";
+    (outs === 1 || outs === 2) ? document.querySelector("#out1").style.backgroundColor = "rgb(247, 211, 6, .7)" : document.querySelector("#out1").style.backgroundColor = "white";
+    (outs === 2) ? document.querySelector("#out2").style.backgroundColor = "rgb(247, 211, 6, .7)" : document.querySelector("#out2").style.backgroundColor = "white";
 }
 
 //check if game is over
@@ -274,13 +297,13 @@ const newInning = () => {
     if(isBottomInning === false){
         isBottomInning = true;
         //flip triangle
-        document.querySelectorAll("#inning-indicator").classList.toggle("transpose");
+        document.querySelector("#inning-indicator").style.transform = "rotate(180deg)";
     }
     else{
         inning++;
         isBottomInning = false;
-        document.querySelectorAll("#inning-number").innerHTML = inning;
-        document.querySelectorAll("#inning-indicator").classList.toggle("transpose");
+        document.querySelector("#inning-number").innerHTML = inning;
+        document.querySelector("#inning-indicator").style.transform = "rotate(0deg)";
     }
 };
 
@@ -357,61 +380,50 @@ const onClickBottomRight = () => {
 //click FB button
 const onClickFB = () => {
     currentPitch = 0;
-    disablePitches();
     document.querySelector("#fb").style.backgroundColor = "red";
-    //function to play game
-    //calcBatResult (zoneSquare, currentPitch)
-    //or
-    //calcPitchResult (zoneSquare, currentPitch)
-    //will compared to cpu generated values and decide if ball, strike, hit, or out
-    //will have to modify board depending omn result
-    enableStrikezone();
     disablePitches();
+    
+    
+    game();
+
+    enableStrikezone();
 };
 
 //click CB button
 const onClickCV = () => {
     currentPitch = 1;
-    disablePitches();
     document.querySelector("#cv").style.backgroundColor = "red";
-    //function to play game
-    //calcBatResult (zoneSquare, currentPitch)
-    //or
-    //calcPitchResult (zoneSquare, currentPitch)
-    //will compared to cpu generated values and decide if ball, strike, hit, or out
-    //will have to modify board depending omn result
-    enableStrikezone();
     disablePitches();
+    
+    
+    game();
+
+    enableStrikezone();
 };
 
 //click CH button
 const onClickCH = () => {
-    currentPitch = 1;
-    disablePitches();
+    currentPitch = 2;
     document.querySelector("#ch").style.backgroundColor = "red";
-    //function to play game
-    //calcBatResult (zoneSquare, currentPitch)
-    //or
-    //calcPitchResult (zoneSquare, currentPitch)
-    //will compared to cpu generated values and decide if ball, strike, hit, or out
-    //will have to modify board depending omn result
-    enableStrikezone();
     disablePitches();
+    
+    
+    game();
+
+    enableStrikezone();
 };
 
 //click SL button
 const onClickSL = () => {
-    currentPitch = 1;
-    disablePitches();
+    currentPitch = 3;
     document.querySelector("#sl").style.backgroundColor = "red";
-    //function to play game
-    //calcBatResult (zoneSquare, currentPitch)
-    //or
-    //calcPitchResult (zoneSquare, currentPitch)
-    //will compared to cpu generated values and decide if ball, strike, hit, or out
-    //will have to modify board depending omn result
-    enableStrikezone();
     disablePitches();
+    
+    
+    game();
+
+    enableStrikezone();
+    console.log(bases);
 };
 
 //function for pitching
@@ -424,9 +436,31 @@ const pitch = () => {
 
     if(guessPitch === currentPitch && guessLocation){
         //hr
+        onHR();
     }
     else{
+        let random = Math.floor(Math.random() * 16);
         //single, double, triple, out, strike, ball
+        //random === 0
+    
+        if(random === 0){
+            onSingle();
+        }
+        else if(random === 1){
+            onDouble();
+        }
+        else if(random === 2){
+            onTriple();
+        }
+        else if(random < 5){
+            onBall();
+        }
+        else if(random < 7){
+            onStrike();
+        }
+        else{
+            onOut();
+        }
     }
 }
 
@@ -436,13 +470,33 @@ const bat = () => {
     let cpuPitch = cpuGetPitch();
     let cpuLocation = cpuGetPitchLocation();
 
-    //my values are currentPitch and zoneSquare
-
-    if(cpuPitch === currentPitch && guessLocation){
+    if(cpuPitch === currentPitch && cpuLocation){
         //hr
+        onHR();
     }
     else{
         //single, double, triple, out, strike, ball
+        let random = Math.floor(Math.random() * 16);
+        //single, double, triple, out, strike, ball
+
+        if(random === 0){
+            onSingle();
+        }
+        else if(random === 1){
+            onDouble();
+        }
+        else if(random === 2){
+            onTriple();
+        }
+        else if(random < 5){
+            onBall();
+        }
+        else if(random < 7){
+            onStrike();
+        }
+        else{
+            onOut();
+        }
     }
 }
 
@@ -452,29 +506,11 @@ const game = (zoneParam, pitchParam) => {
     //pitching
     if(isBottomInning === false){
         pitch();
-
-        /**document.querySelector("#statement").innerHTML = "You are Pitching";
-        document.querySelector("#statement2").innerHTML = "New Half Inning";
-        while (outs < 3 && gameOver === false){
-            //change to pitch interface
-            //pitch logic
-            
-            //select pitches
-            //
-        }*/
     }
     //batting
     else{
-        document.querySelector("#statement").innerHTML = "You are Pitching";
-        document.querySelector("#statement2").innerHTML = "New Half Inning";
-        while (outs < 3 && gameOver === false){
-            //change to hit interface
-            //hit logic
-
-        }
+        bat();
     }
-
-    
     //display game over when game is over
    
 };
@@ -488,8 +524,6 @@ const main = () => {
     document.querySelector("#cv").addEventListener("mouseup", () => {onClickCV()});
     document.querySelector("#ch").addEventListener("mouseup", () => {onClickCH()});
     document.querySelector("#sl").addEventListener("mouseup", () => {onClickSL()});
-
-    //game();
 }
 
 //play game
