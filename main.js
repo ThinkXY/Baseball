@@ -256,11 +256,7 @@ const updateOuts = () => {
 //check if game is over
 const isGameOver = () => {
     if(inning === 9){
-        /*if(isBottomInning === true){
-            if(homeScore > awayScore){
-                return true;
-            }
-        }*/
+      
         if(homeScore > awayScore){
             return true;
         }
@@ -447,7 +443,6 @@ const onClickSL = () => {
     game();
 
     enableStrikezone();
-    console.log(bases);
 };
 
 //function for pitching
